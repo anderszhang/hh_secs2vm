@@ -1,47 +1,32 @@
 <template>
-  <div class="layout-demo">
-    <a-layout>
-      <a-layout-header>Header</a-layout-header>
-      <a-layout>
-        <a-layout-sider :resize-directions="['right']">
-          Sider
-        </a-layout-sider>
-        <a-layout-content>Content</a-layout-content>
-      </a-layout>
-      <a-layout-footer>Footer</a-layout-footer>
-    </a-layout>
-  </div>
+  <a-layout class="h-[100%]">
+    <a-layout-sider :resize-directions="['right']" class="p-[10px]">
+      <Sider @transform="transform"></Sider>
+    </a-layout-sider>
+    <a-layout-content class="w-[50%]">
+      <VmEditor :code=code></VmEditor>
+    </a-layout-content>
+  </a-layout>
+
 </template>
-<style scoped>
-.layout-demo :deep(.arco-layout-header),
-.layout-demo :deep(.arco-layout-footer),
-.layout-demo :deep(.arco-layout-sider-children),
-.layout-demo :deep(.arco-layout-content) {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: var(--color-white);
-  font-size: 16px;
-  font-stretch: condensed;
-  text-align: center;
-}
+<script setup lang="ts">
+import Sider from '@renderer/components/Sider.vue'
+import VmEditor from './components/VmEditor.vue';
+import { compile } from './compiler/compile';
+import { Message } from '@arco-design/web-vue';
+import { ref } from 'vue';
 
+const code = ref('')
 
-.layout-demo :deep(.arco-layout-header),
-.layout-demo :deep(.arco-layout-footer) {
-  height: 64px;
-  background-color: var(--color-primary-light-4);
+function transform(secsMsg:string){
+  try {
+    code.value = compile(secsMsg)
+  } catch (error: any) {
+    Message.error({
+      content: error.message,
+    })
+  }
 }
+</script>
 
-.layout-demo :deep(.arco-layout-sider) {
-  width: 206px;
-  background-color: var(--color-primary-light-3);
-  min-width: 150px;
-  max-width: 500px;
-  height: 200px;
-}
-
-.layout-demo :deep(.arco-layout-content) {
-  background-color: rgb(var(--arcoblue-6));
-}
-</style>
+<style scoped></style>
