@@ -2,8 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import {filelist, getAbsolutePath, readFile, writeFile } from './FileUtil'
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -34,6 +35,27 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+  return mainWindow
+}
+
+
+// 增加ipcMain的监听
+function addIpcMainListener(win: BrowserWindow) {
+  // 读取配置文件
+  ipcMain.handle('file:read', async (event, filepath: string) => {
+    const configFile = getAbsolutePath(app.getAppPath(), filepath)
+    const data = await readFile(configFile)
+    return data
+  })
+
+  // 写入配置文件
+  ipcMain.handle('file:write', async (event, filepath: string, content: string) => {
+    const configFile = getAbsolutePath(app.getAppPath(), filepath)
+    const data = await writeFile(configFile, content)
+    return data
+  })
+
+ 
 }
 
 // This method will be called when Electron has finished
@@ -53,8 +75,9 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
-  createWindow()
+  const mainWindow = createWindow()
 
+  addIpcMainListener(mainWindow)
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

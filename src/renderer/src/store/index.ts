@@ -1,15 +1,19 @@
 // stores/counter.js
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', {
+export const useAppStore = defineStore('counter', {
   state: () => {
-    return { count: 0 }
+    return { 
+      machineType: '', 
+      secsMsg:'',
+      config: null
+    }
   },
   // 也可以这样定义
   // state: () => ({ count: 0 })
   actions: {
-    increment() {
-      this.count++
-    },
+    chooseMachineType(type: string) {
+      this.machineType = type
+    }
   },
 })

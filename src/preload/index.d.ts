@@ -7,6 +7,6 @@ interface ExtAPI {
 declare global {
   interface Window {
     electron: ElectronAPI
-    extApi: unknown
+    extApi: ExtAPI
   }
 }

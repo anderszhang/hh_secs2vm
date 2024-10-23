@@ -1,7 +1,7 @@
 <template>
   <div class="w-[100%] flex justify-between ">
     <a-space size="large">
-      <a-cascader :options="options" v-model="machineType" default-value="HHQK" expand-trigger="hover" :style="{ width: '200px' }"
+      <a-cascader :options="options" v-model="machineType" @change="chooseMachineType" default-value="HHQK" expand-trigger="hover" :style="{ width: '200px' }"
         placeholder="Machine Type" allow-clear />
         <!-- 编辑配置 -->
       <a-button :disabled="!machineType" @click="openConfigDialog">
@@ -30,11 +30,13 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { IconPlus, IconEdit } from '@arco-design/web-vue/es/icon'
+import { useAppStore } from '@renderer/store';
 
 import { secs } from './Editor/lastFile';
 
 const secsMsg = ref('')
 const machineType = ref('')
+const appStore = useAppStore()
 
 const options = reactive([
   {
@@ -54,6 +56,10 @@ const emit = defineEmits<{
   'openConfigDialog': [machineType: string]
 }>()
 
+const chooseMachineType = (value: any) => {
+  console.log(value)
+  appStore.chooseMachineType(value)
+}
 const transform = () => {
   emit('transform', secsMsg.value)
 }
