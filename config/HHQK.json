@@ -1,0 +1,10 @@
+{
+  "area": "CMP",
+  "brand": "HHQK",
+  "CCODE": {
+    "1001": {
+      "name": "main recipe",
+      "paramSet": [{ "code": "1", "name": "" }]
+    }
+  }
+}

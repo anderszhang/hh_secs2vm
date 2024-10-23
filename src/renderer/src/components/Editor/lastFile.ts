@@ -15,10 +15,6 @@ export const secs = `<L[4]
             <A[17] "polish head sweep">
             <A[4] "open">
             <FT_4[1] 0>
-            <FT_4[1] 0>
-            <FT_4[1] 0>
-            <FT_4[1] 0>
-            <FT_4[1] 0>
         >
     >
 >
