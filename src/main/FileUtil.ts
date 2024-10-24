@@ -30,7 +30,7 @@ export async function writeFile(filePath: string, data: string) {
  * 文件遍历方法
  * @param filePath 需要遍历的文件路径
  */
-export async function filelist(rootPath: string) {
+export async function fileList(rootPath: string) {
   //根据文件路径读取文件，返回文件列表
   const list = await fs.promises.readdir(rootPath, { recursive: true })
   const data = list.map((file) => {
@@ -41,6 +41,6 @@ export async function filelist(rootPath: string) {
       isDirectory: stat.isDirectory(),
       isFile: stat.isFile()
     }
-  })
+  }).filter(f=>f.isFile).map(f=>f.name)
   return data
 }

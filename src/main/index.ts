@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import {filelist, getAbsolutePath, readFile, writeFile } from './FileUtil'
+import {getAbsolutePath, readFile, writeFile, fileList } from './FileUtil'
 
 function createWindow(): BrowserWindow {
   // Create the browser window.
@@ -55,7 +55,11 @@ function addIpcMainListener(win: BrowserWindow) {
     return data
   })
 
- 
+  ipcMain.handle('file:list', async (event, dir:string) => {
+    const rootDir = getAbsolutePath(app.getAppPath(), dir)
+    const data:string[]= await fileList(rootDir)
+    return data
+  })
 }
 
 // This method will be called when Electron has finished
@@ -63,7 +67,7 @@ function addIpcMainListener(win: BrowserWindow) {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('com.anderszhang.hh_secs2vm')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

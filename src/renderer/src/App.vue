@@ -22,12 +22,14 @@ import VmEditor from './components/VmEditor.vue';
 import ConfigDialog from './components/Dialog/ConfigDialog.vue'
 import { compile } from './compiler/compile';
 import { Message } from '@arco-design/web-vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useAppStore } from './store';
 
 const code = ref('')
 const secsEditorRef = ref()
 const configDialogRef = ref()
 const configDialogVisible = ref(false)
+const appStore = useAppStore()
 
 //开始转义
 function transform() {
@@ -41,10 +43,14 @@ function transform() {
   }
 }
 
-const openConfigDialog = (machineType: string) => {
+const openConfigDialog = () => {
   configDialogVisible.value = true
-  // configDialogRef.value?.open(machineType)
 }
+
+onMounted(() => {
+  appStore.refreshMachineTypeList()
+})
+
 </script>
 
 <style scoped></style>

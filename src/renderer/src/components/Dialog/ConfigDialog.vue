@@ -27,7 +27,6 @@ import { ref } from 'vue'
 import Editor from '@renderer/components/Editor/index.vue'
 import { template } from './DefaultTemplate'
 import { useAppStore } from '@renderer/store';
-import { machine } from 'os';
 
 const config = ref('')
 const machineTypeInput = ref('')
@@ -53,9 +52,13 @@ const handleOk = () => {
       return
     }
   }
-  const fileName = `${appStore.machineType || machineTypeInput.value}.vm`
-  const source = JSON.stringify(config.value,null, 2)
-  window.extApi.writeFile(fileName,source).then(()=>{
+  const machineType = appStore.machineType || machineTypeInput.value
+  const fileName = `${machineType}.json`
+  // 保存配置文件
+  window.extApi.writeConfigFile(fileName, config.value).then(()=>{
+    // 保存成功后，更新配置
+    appStore.refreshMachineType(machineType)
+    appStore.refreshMachineTypeList()
     emit('close')
   })
 
@@ -68,6 +71,7 @@ const handleCancel = () => {
 const handleBeforeOpen = () => {
   // 如果有值，为编辑状态
   if (appStore.machineType) {
+    config.value = appStore.config
   } else {
     config.value = JSON.stringify(template, null, 2)
   }
