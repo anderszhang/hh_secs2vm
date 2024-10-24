@@ -24,6 +24,7 @@ import { compile } from './compiler/compile';
 import { Message } from '@arco-design/web-vue';
 import { onMounted, ref } from 'vue';
 import { useAppStore } from './store';
+import type { CCODE, CCODEConfig, MachineTypeConfig } from './compiler/options';
 
 const code = ref('')
 const secsEditorRef = ref()
@@ -34,8 +35,12 @@ const appStore = useAppStore()
 //开始转义
 function transform() {
   try {
+    const options: MachineTypeConfig = JSON.parse(appStore.config)
+    if(!options){
+      throw new Error('请先配置机器类型')
+    }
     const secsMsg = secsEditorRef.value?.getSecsMsg()
-    code.value = compile(secsMsg)
+    code.value = compile(secsMsg,options.CCODE) as string
   } catch (error: any) {
     Message.error({
       content: error.message,

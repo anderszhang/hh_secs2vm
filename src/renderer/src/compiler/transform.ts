@@ -1,4 +1,5 @@
 import { AssignmentExpression, NodeType, vNode } from './ast';
+import type { CCODE, CCODEConfig, CCODEParam } from './options';
 import {
   ASTNode,
   SecsList,
@@ -11,14 +12,14 @@ import { createGetFun } from './transformHelper';
 interface TransformContext {
   ast: vNode;
 }
-export function transform(ast: ASTNode, options: any) {
+export function transform(ast: ASTNode, options: CCODE) {
   if (ast.type !== SecsNodeType.List || ast.length < 4) {
     throw new Error('Invalid AST');
   }
   const root = createRoot();
   // 目前只处理mainRecipe
   const recipe = createRecipe(ast, options);
-  root.children.push(recipe);
+  root.children!.push(recipe);
   return root;
 }
 
@@ -30,32 +31,32 @@ function createRoot(): vNode {
   };
 }
 
-function createRecipe(ast: ASTNode, options: any): vNode {
-  const recipe = {
+function createRecipe(ast: ASTNode, options: CCODE): vNode {
+  const recipe:vNode = {
     type: NodeType.Element,
     tag: 'recipe',
     children: [],
   };
-  const head = createRecipeHead();
+  const head:vNode = createRecipeHead();
   // 查看有几个recipe
   const recipeList = (ast as SecsList).children[3] as SecsList;
   if (recipeList.type !== SecsNodeType.List) {
     throw new Error('Invalid AST');
   }
   const body = createRecipeBody(recipeList, options);
-  recipe.children.push(head);
-  recipe.children.push(body);
+  recipe.children!.push(head);
+  recipe.children!.push(body);
 
   return recipe;
 }
 
 function createRecipeHead(): vNode {
-  const head = {
+  const head:vNode = {
     type: NodeType.Element,
     tag: 'head',
     children: [],
   };
-  const ppId = {
+  const ppId:vNode = {
     type: NodeType.Element,
     tag: 'ppId',
     children: [
@@ -66,7 +67,7 @@ function createRecipeHead(): vNode {
     ],
   };
 
-  const mdln = {
+  const mdln:vNode = {
     type: NodeType.Element,
     tag: 'mdln',
     children: [
@@ -77,7 +78,7 @@ function createRecipeHead(): vNode {
     ],
   };
 
-  const softRev = {
+  const softRev:vNode = {
     type: NodeType.Element,
     tag: 'softRev',
     children: [
@@ -87,12 +88,12 @@ function createRecipeHead(): vNode {
       },
     ],
   };
-  head.children.push(ppId, mdln, softRev);
+  head.children!.push(ppId, mdln, softRev);
   return head;
 }
 
-function createRecipeBody(recipeList: SecsList, options: any): vNode {
-  const body = {
+function createRecipeBody(recipeList: SecsList, options: CCODE): vNode {
+  const body:vNode = {
     type: NodeType.Element,
     tag: 'body',
     children: [],
@@ -118,6 +119,16 @@ function createRecipeBody(recipeList: SecsList, options: any): vNode {
     const ccIdNode = (recipe as SecsList).children[0] as SecsNode;
     const ccId = ccIdNode.value;
     const paramList = (recipe as SecsList).children[1] as SecsList;
+    // 检查有没有配置CCODE
+    if (options[ccId as string] === undefined) {
+      throw new Error(`CCODE:${ccId} not found`);
+    }
+    const paramSetConfig = options[ccId as string]?.paramSet
+    // 检查配置的参数是否一致
+    if (paramList.children.length !== paramSetConfig.length) {
+      throw new Error(`CCODE:${ccId} paramSet length not match`);
+    }
+
     const ifStatement: vNode = {
       type: NodeType.IfStatement,
       statement: {
@@ -135,21 +146,21 @@ function createRecipeBody(recipeList: SecsList, options: any): vNode {
       },
       children: [],
     };
-    ifStatement.children.push(paramsAssignment);
+    ifStatement.children!.push(paramsAssignment);
 
-    const paramSet = createParamSet(paramList, options);
-    ifStatement.children.push(paramSet);
-    forStatement.children.push(ifStatement);
+    const paramSet = createParamSet(paramList, paramSetConfig);
+    ifStatement.children!.push(paramSet);
+    forStatement.children!.push(ifStatement);
   }
 
-  body.children.push(setBodyStatement);
-  body.children.push(forStatement);
+  body.children!.push(setBodyStatement);
+  body.children!.push(forStatement);
 
   return body;
 }
 
-function createParamSet(paramList: SecsList, options: any): vNode {
-  const paramSet = {
+function createParamSet(paramList: SecsList, paramOptions: CCODEParam[]): vNode {
+  const paramSet:vNode = {
     type: NodeType.Element,
     tag: 'paramSet',
     children: [],
@@ -161,12 +172,12 @@ function createParamSet(paramList: SecsList, options: any): vNode {
       type: NodeType.Element,
       tag: 'param',
       props: {
-        name: '',
+        name: paramOptions[i].name,
         value: createGetFun(node.type, i),
         type: secsNodeType2DataType(node.type),
       },
     };
-    paramSet.children.push(paramNode);
+    paramSet.children!.push(paramNode);
   }
 
   return paramSet;

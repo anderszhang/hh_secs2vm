@@ -143,7 +143,7 @@ export function secsParse(message: string): ASTNode {
       const tag = match[1];
       const length = match[2] ? parseInt(match[2], 10) : 0;
       const value = isListToken
-        ? null
+        ? ''
         : match[3]
         ? match[3]
         : parseInt(match[4], 10);

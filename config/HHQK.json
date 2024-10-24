@@ -2,9 +2,19 @@
   "area": "CMP",
   "brand": "HHQK",
   "CCODE": {
-    "1001": {
-      "name": "main recipe",
-      "paramSet": [{ "code": "1", "name": "" }]
+    "1": {
+      "name": "polish recipe",
+      "paramSet": [
+        { "name": "Id" , "comment": "" },
+        { "name": "Time" , "comment": "" },
+        { "name": "Main" , "comment": "" },
+        { "name": "EPD" , "comment": "" },
+        { "name": "HEAD" , "comment": "" },
+        { "name": "Plate" , "comment": "" },
+        { "name": "SWEEP" , "comment": "" },
+        { "name": "HPR" , "comment": "" },
+        { "name": "Z1" , "comment": "" }
+      ]
     }
   }
 }

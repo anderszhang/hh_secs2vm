@@ -8,11 +8,11 @@
           :class="{ 'w-[250px] mr-[5px]': true, 'border-warning': !machineTypeInput.length }"
           placeholder="Please enter machine type" allow-clear />
       </span>
-      <span v-else>{{ appStore.machineType }}</span>
+      <span class="mr-[5px]" v-else>{{ appStore.machineType }}</span>
       Config
     </template>
     <a-tabs default-active-key="json">
-      <a-tab-pane key="json" title="JSON">
+      <a-tab-pane key="json" title="JSON" >
 
         <Editor class="mt-[10px] !h-[600px]" v-model:model-value="config" language="json"></Editor>
       </a-tab-pane>
@@ -85,5 +85,8 @@ const handleBeforeOpen = () => {
 
 .border-warning {
   border-color: red;
+}
+:deep(.arco-tabs-content){
+  padding: 0px !important;
 }
 </style>
