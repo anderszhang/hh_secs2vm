@@ -5,12 +5,12 @@
     "1": {
       "name": "polish recipe",
       "paramSet": [
-        { "name": "Id" , "comment": "" },
-        { "name": "Time" , "comment": "" },
+        { "name": "Id" , "comment": "recipe step number" },
+        { "name": "Time" , "comment": "step setting time" },
         { "name": "Main" , "comment": "" },
         { "name": "EPD" , "comment": "" },
         { "name": "HEAD" , "comment": "" },
-        { "name": "Plate" , "comment": "" },
+        { "name": "Plante" , "comment": "" },
         { "name": "SWEEP" , "comment": "" },
         { "name": "HPR" , "comment": "" },
         { "name": "Z1" , "comment": "" }

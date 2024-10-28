@@ -5,8 +5,8 @@ export const template = {
     '1001': {
       name: 'main recipe',
       paramSet: [
-        { name: '', comment: '' },
-        { name: '', comment: '' }
+        { name: 'id', comment: 'This is Time' },
+        { name: 'Time', comment: 'This is Time' }
       ]
     }
   }

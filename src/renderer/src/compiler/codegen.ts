@@ -92,7 +92,7 @@ function genElement(node: vNode, context: CodegenContext) {
 
 function genText(node: vNode, context: CodegenContext) {
   const { content } = node;
-  context.push(content);
+  context.push(content!);
 }
 
 function genAssignmentExpression(node: vNode, context: CodegenContext) {
@@ -103,7 +103,7 @@ function genForeachExpression(node: vNode, context: CodegenContext) {
   const { children, statement } = node;
   const { obj, item } = statement as ForeachExpression;
   context.push(`#foreach(${item} in ${obj})`);
-  genChildren(children, context);
+  genChildren(children!, context);
   context.push(endTag);
 }
 
@@ -116,7 +116,7 @@ function genIfStatement(node: vNode, context: CodegenContext) {
     context.push(`#if(${left} ${operator} ${right})`);
   }
 
-  genChildren(children, context);
+  genChildren(children!, context);
   context.push(endTag);
 }
 
