@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import {getAbsolutePath, readFile, writeFile, fileList } from './FileUtil'
+import { writeExcel } from './ExcelUtil'
 
 function createWindow(): BrowserWindow {
   // Create the browser window.
@@ -54,11 +55,18 @@ function addIpcMainListener(win: BrowserWindow) {
     const data = await writeFile(configFile, content)
     return data
   })
-
+  // 读取文件类别
   ipcMain.handle('file:list', async (event, dir:string) => {
     const rootDir = getAbsolutePath(app.getAppPath(), dir)
     const data:string[]= await fileList(rootDir)
     return data
+  })
+
+  // 响应写入excel事件
+  ipcMain.handle('excel:write', async (event, filepath: string, data:any) => {
+    const outFile = getAbsolutePath(app.getAppPath(), filepath)
+    const result = await writeExcel(data, outFile)
+    return result
   })
 }
 

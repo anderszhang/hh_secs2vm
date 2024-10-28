@@ -22,7 +22,7 @@
     <a-space size="large" class="justify-end">
       <a-button>Copy</a-button>
       <a-button>Save</a-button>
-      <a-button>Export Excel</a-button>
+      <a-button @click="exportExcel">Export Excel</a-button>
     </a-space>
   </div>
 
@@ -41,6 +41,7 @@ const appStore = useAppStore()
 
 const emit = defineEmits<{
   'transform': [msg: string],
+  'exportExcel': [],
   'openConfigDialog': []
 }>()
 
@@ -49,6 +50,9 @@ const transform = () => {
   emit('transform', secsMsg.value)
 }
 
+const exportExcel = () => {
+  emit('exportExcel')
+}
 const openConfigDialog = () => {
   emit('openConfigDialog')
 }

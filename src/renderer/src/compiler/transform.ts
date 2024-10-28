@@ -1,5 +1,5 @@
 import { AssignmentExpression, NodeType, vNode } from './ast';
-import type { CCODE, CCODEConfig, CCODEParam } from './options';
+import type { CCODEMap, CCODEConfig, CCODEParam } from './options';
 import {
   ASTNode,
   SecsList,
@@ -9,10 +9,7 @@ import {
 } from './secs2';
 import { createGetFun } from './transformHelper';
 
-interface TransformContext {
-  ast: vNode;
-}
-export function transform(ast: ASTNode, options: CCODE) {
+export function transform(ast: ASTNode, options: CCODEMap) {
   if (ast.type !== SecsNodeType.List || ast.length < 4) {
     throw new Error('Invalid AST');
   }
@@ -31,7 +28,7 @@ function createRoot(): vNode {
   };
 }
 
-function createRecipe(ast: ASTNode, options: CCODE): vNode {
+function createRecipe(ast: ASTNode, options: CCODEMap): vNode {
   const recipe:vNode = {
     type: NodeType.Element,
     tag: 'recipe',
@@ -92,7 +89,7 @@ function createRecipeHead(): vNode {
   return head;
 }
 
-function createRecipeBody(recipeList: SecsList, options: CCODE): vNode {
+function createRecipeBody(recipeList: SecsList, options: CCODEMap): vNode {
   const body:vNode = {
     type: NodeType.Element,
     tag: 'body',

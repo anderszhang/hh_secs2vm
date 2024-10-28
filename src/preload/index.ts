@@ -1,6 +1,5 @@
 import { contextBridge,ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { readFile } from 'fs'
 
 // Custom APIs for renderer
 const extApi = {
@@ -20,6 +19,11 @@ const extApi = {
   readConfigFile: (filepath: string) => {
     const fName = 'config/'+filepath
     return ipcRenderer.invoke('file:read', fName)
+  },
+
+  exportExcel: (fileName:string, data:any)=>{
+    const fName = 'out/'+fileName
+    return ipcRenderer.invoke('excel:write', fName, data)
   },
 
   getConfigList: () => {

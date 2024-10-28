@@ -14,81 +14,68 @@ export function secsParse(message: string): ASTNode {
     if (isSecsTag(tag, SecsTags.L)) {
       // 处理列表节点;
       const children: ASTNode[] = [];
-
       for (let i = 0; i < length; i++) {
         children.push(parse());
       }
-
       return {
         type: SecsNodeType.List,
-        length,
+        ...meta,
         children,
       };
     } else if (isSecsTag(tag, SecsTags.A)) {
       return {
         type: SecsNodeType.ASCII,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.U1)) {
       return {
         type: SecsNodeType.U1,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.U2)) {
       return {
         type: SecsNodeType.U2,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.U4)) {
       return {
         type: SecsNodeType.U4,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.F4)) {
       return {
         type: SecsNodeType.F4,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.F8)) {
       return {
         type: SecsNodeType.F8,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.Bin)) {
       return {
         type: SecsNodeType.Bin,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.I1)) {
       return {
         type: SecsNodeType.I1,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.I2)) {
       return {
         type: SecsNodeType.I2,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.I4)) {
       return {
         type: SecsNodeType.I4,
-        length,
-        value,
+        ...meta,
       };
     } else if (isSecsTag(tag, SecsTags.I8)) {
       return {
         type: SecsNodeType.I8,
-        length,
-        value,
+        ...meta,
       };
     } else {
       throw new Error(`Unknown token type: ${token}`);

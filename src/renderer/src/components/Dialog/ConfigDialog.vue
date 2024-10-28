@@ -14,16 +14,22 @@
     <a-tabs default-active-key="json">
       <a-tab-pane key="json" title="JSON" >
 
-        <Editor class="mt-[10px] !h-[600px]" v-model:model-value="config" language="json"></Editor>
+        <Editor class="mt-[10px] !h-[600px]" v-model:model-value="config" language="json" ></Editor>
       </a-tab-pane>
-      <a-tab-pane key="table" title="Table"> Content of Tab Panel 2 </a-tab-pane>
+      <a-tab-pane key="table" title="Table" :no-footer="true">
+        <vue-excel-editor v-model="jsondata">
+          <vue-excel-column field="name"   label="name"  width="100px"     type="string"  />
+          <vue-excel-column field="comment"   label="comment"  width="320px"    type="string" />
+
+      </vue-excel-editor>
+      </a-tab-pane>
 
     </a-tabs>
   </a-modal>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Editor from '@renderer/components/Editor/index.vue'
 import { template } from './DefaultTemplate'
 import { useAppStore } from '@renderer/store';
@@ -32,7 +38,20 @@ const config = ref('')
 const machineTypeInput = ref('')
 
 const appStore = useAppStore()
+// const jsondata = ref(template.CCODE[1001].paramSet)
+const sheetIndex = ref(0);
 
+const jsondata = computed(() => {
+  if(!appStore.config){
+    return []
+  }
+   const config = JSON.parse(appStore.config).CCODE;
+   const keys = Object.keys(config)
+   if(keys.length > 0 && keys.length > sheetIndex.value){
+    return config[keys[sheetIndex.value]].paramSet
+   }
+   return []
+})
 
 const props = defineProps<{
   visible: boolean

@@ -6,6 +6,7 @@ interface ExtAPI {
   writeConfigFile: (path: string, content: string) => Promise<void>
   readConfigFile: (path: string) => Promise<string>
   getConfigList: () => Promise<string[]>
+  exportExcel(fileName:string, data: xlsx.Workbook[]): Promise<void>
 }
 
 declare global {

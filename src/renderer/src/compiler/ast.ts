@@ -32,3 +32,16 @@ export type ForeachExpression = {
   obj: string;
   item: string;
 };
+
+export enum ExcelNodeType  {
+  Root = 'root',
+  Row = 'row',
+  Cell= 'cell',
+}
+
+export type ExcelNode = {
+  type: ExcelNodeType;
+  value?: string|number|boolean;
+  props?: Record<string, unknown>;
+  children?: ExcelNode[];
+};

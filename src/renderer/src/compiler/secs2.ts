@@ -20,12 +20,14 @@ export type ASTNode = SecsList | SecsNode
 export interface SecsList {
   type: SecsNodeType.List
   length: number
+  tag: string
   children: ASTNode[]
 }
 
 export interface SecsNode {
   type: SecsNodeType
   length: number
+  tag: string
   value: string | number | boolean
 }
 

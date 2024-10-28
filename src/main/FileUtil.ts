@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import * as xlsx from 'node-xlsx';
 
 /**
  * 获取文件绝对路径
@@ -43,4 +44,10 @@ export async function fileList(rootPath: string) {
     }
   }).filter(f=>f.isFile).map(f=>f.name)
   return data
+}
+
+// 写入excel文件
+export async function writeExcel(data: xlsx.WorkSheet[], filePath: string) {
+  const buffer = xlsx.build(data);
+  return fs.promises.writeFile(filePath, buffer)
 }
