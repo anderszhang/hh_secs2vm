@@ -30,7 +30,7 @@ export function transformExcel(ast: ASTNode, options: CCODEMap) {
   context.indent()
   transformRecipeHead(root.children!, context)
   transformRecipeBody(root.children![3] as SecsList,  context, options)
-  context.deIndent()
+  context.addEndRow()
   return  context.ast
 }
 
@@ -65,6 +65,7 @@ function transformRecipeBody(paramSets: SecsList, context: TransformExcelContext
     context.addRow([cCodeCell])
     // 参数
     transformParamSet(recipeNode.children![1] as SecsList, context)
+    context.addEndRow()
   })
   context.addEndRow()
 }
@@ -119,7 +120,8 @@ function createTransformContext() {
 
     addEndRow() {
       this.deIndent()
-      this.addRow(['>'])
+      const v = ' '.repeat(context.indentLevel) + '/>'
+      this.addRow([v])
     },
 
     indent() {
