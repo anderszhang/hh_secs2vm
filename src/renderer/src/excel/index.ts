@@ -1,5 +1,5 @@
 import { compileToExcel } from '@renderer/compiler/compile'
-import { CCODEMap, MachineTypeConfig } from '@renderer/compiler/options'
+import { CCODEMap } from '@renderer/compiler/options'
 
 export function createExcelFile(machineType: string, secsMsg: string, ccodeMap: CCODEMap) {
   const data = compileToExcel(secsMsg, ccodeMap)

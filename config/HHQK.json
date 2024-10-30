@@ -1,6 +1,7 @@
 {
+  "eqpType": "Universal-300 T",
   "area": "CMP",
-  "brand": "HHQK",
+  "supplier": "HHQK",
   "CCODE": {
     "1": {
       "name": "polish recipe",
@@ -14,6 +15,15 @@
         { "name": "SWEEP" , "comment": "" },
         { "name": "HPR" , "comment": "" },
         { "name": "Z1" , "comment": "" }
+      ]
+    },
+     "2": {
+      "name": "mega recipe",
+      "paramSet": [
+        { "name": "Id" , "comment": "recipe step number" },
+        { "name": "Time" , "comment": "step setting time" },
+        { "name": "Main" , "comment": "" },
+        { "name": "EPD" , "comment": "" }
       ]
     }
   }

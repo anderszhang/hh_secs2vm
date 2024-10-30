@@ -5,6 +5,7 @@ interface State {
   secsMsg: string,
   vmTemplate: string
   machineTypeList: string[],
+  
   config: any
 }
 

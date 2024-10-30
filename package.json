@@ -24,8 +24,10 @@
     "@arco-design/web-vue": "^2.56.2",
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
+    "@handsontable/vue3": "^14.6.1",
     "electron-updater": "^6.1.7",
     "exceljs": "^4.4.0",
+    "handsontable": "^14.6.1",
     "monaco-editor": "0.52.0",
     "pinia": "^2.2.4",
     "vue3-excel-editor": "^1.0.59"
