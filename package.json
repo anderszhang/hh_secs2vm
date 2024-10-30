@@ -25,8 +25,8 @@
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
     "electron-updater": "^6.1.7",
+    "exceljs": "^4.4.0",
     "monaco-editor": "0.52.0",
-    "node-xlsx": "^0.24.0",
     "pinia": "^2.2.4",
     "vue3-excel-editor": "^1.0.59"
   },

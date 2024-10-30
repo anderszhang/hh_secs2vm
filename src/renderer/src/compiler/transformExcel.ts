@@ -120,7 +120,7 @@ function createTransformContext() {
 
     addEndRow() {
       this.deIndent()
-      const v = ' '.repeat(context.indentLevel) + '/>'
+      const v = ' '.repeat(context.indentLevel) + '>'
       this.addRow([v])
     },
 
@@ -132,7 +132,6 @@ function createTransformContext() {
     },
 
   }
-  const headCols = ['Body', 'Group', 'PParamName', 'Type', 'Comment']
-  context.addRow(headCols)
+
   return context
 }

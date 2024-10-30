@@ -1,23 +1,37 @@
-import { VNode } from "vue";
+import { compileToExcel } from '@renderer/compiler/compile'
+import { CCODEMap, MachineTypeConfig } from '@renderer/compiler/options'
 
-
- type CodegenNode = { name: string };
-
- interface ExcelCodegenContext {
-    source: string;
-    data: [];
-    line: number;
-    column: number;
-    offset: number;
-    indentLevel: number;
-    helper(key: symbol): string;
-    push(code: string, newlineIndex?: number, node?: CodegenNode): void;
-    indent(): void;
-    deIndent(withoutNewLine?: boolean): void;
-    newline(): void;
-  }
-  
-export function generateExcel(ast:VNode) {
-    
+export function createExcelFile(machineType: string, secsMsg: string, ccodeMap: CCODEMap) {
+  const data = compileToExcel(secsMsg, ccodeMap)
+  const excelData = [
+    {
+      name: 'sheet1',
+      data: data,
+      hasHeader: true,
+      hasBorder: true,
+      columns: [
+        {
+          name: 'Body',
+          width: 50
+        },
+        {
+          name: 'Group',
+          width: 10
+        },
+        {
+          name: 'PParmName',
+          width: 10
+        },
+        {
+          name: 'Type',
+          width: 10
+        },
+        {
+          name: 'Comment',
+          width: 50
+        }
+      ]
+    }
+  ]
+  window.extApi.exportExcel(`${machineType}.xlsx`, excelData)
 }
-

@@ -26,6 +26,7 @@ import { Message } from '@arco-design/web-vue';
 import { onMounted, ref } from 'vue';
 import { useAppStore } from './store';
 import type { CCODEMap, CCODEConfig, MachineTypeConfig } from './compiler/options';
+import { createExcelFile } from './excel';
 
 const code = ref('')
 const secsEditorRef = ref()
@@ -50,17 +51,19 @@ function transform() {
 }
 
 function exportExcel() {
+  execFunHasHandleError((options: MachineTypeConfig)=>{
+    const secsMsg = secsEditorRef.value?.getSecsMsg()
+    createExcelFile(appStore.machineType,secsMsg,options.CCODE)
+  })
+}
+
+function execFunHasHandleError(fun: Function) {
   try {
     const options: MachineTypeConfig = JSON.parse(appStore.config)
     if(!options){
       throw new Error('请先配置机器类型')
     }
-    const secsMsg = secsEditorRef.value?.getSecsMsg()
-    const data =  compileToExcel(secsMsg,options.CCODE)
-    const excelData = [
-      {name: 'mySheetName', data: data}
-    ];
-    window.extApi.exportExcel('template.xlsx',excelData)
+    fun(options)
   } catch (error: any) {
     Message.error({
       content: error.message,
