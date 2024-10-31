@@ -10,7 +10,8 @@ export type  CCODEConfig = {
 export type  CCODEMap = Record<string, CCODEConfig>
 
 export type MachineTypeConfig = {
+    eqpType: string,
     area: string,
-    brand: string,
+    supplier: string,
     CCODE: CCODEMap
 }

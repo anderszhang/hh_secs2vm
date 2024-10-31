@@ -24,12 +24,12 @@ const props = defineProps({
     },
     afterOnCellMouseDown: {
         type: Function,
-        default: (event, coords, TD) => {}
+        default: (row, col) => {}
     }
 })
 
 const emit = defineEmits<{
-    afterOnCellMouseDown : [event: Event, coords: any, TD: any]
+    afterOnCellMouseDown : [row: number, col: number]
 }>()
 
 const tableRef = ref()
@@ -50,14 +50,20 @@ const hotSettings = reactive(
         afterOnCellMouseDown: (event, coords, TD) => {
             console.log('单元格被点击了');
             console.log('行：', coords.row, '列：', coords.col);
-            emit('afterOnCellMouseDown', event, coords, TD)
+            emit('afterOnCellMouseDown', coords.row,coords.col)
         }
     }
 )
 
+const getData = () => {
+    return tableRef.value.hotInstance.getData()
+}
+
+defineExpose({
+    getData
+})
 
 watch(() => props.data, (newVal) => {
-    console.log(newVal)
     tableRef.value.hotInstance.loadData(newVal)
 })
 

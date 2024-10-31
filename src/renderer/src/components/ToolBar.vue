@@ -2,7 +2,7 @@
   <div class="w-[100%] flex justify-between ">
     <a-space size="large">
       <a-select :options="appStore.eqpTypeList" v-model="appStore.eqpType" :style="{ width: '200px' }"
-        placeholder="Equipment Type" allow-search allow-clear @change="(eqpType)=>appStore.readConfig(eqpType as string)"/>
+        placeholder="Equipment Type" allow-search allow-clear @change="(eqpType)=>appStore.readEqpTypeConfig(eqpType as string)"/>
 
       <!-- 编辑配置 -->
       <a-button :disabled="!appStore.eqpType" @click="openConfigDialog">

@@ -1,23 +1,30 @@
 // stores/counter.js
 import { defineStore } from 'pinia'
+
+import { getAreaDict, getSupplierDict, getEqpTypeList,getEqpTypeConfig } from '@renderer/util/configUtil'
+import { MachineTypeConfig } from '@renderer/compiler/options'
 interface State {
-  eqpType: string,
-  secsMsg: string,
+  eqpType: string
+  secsMsg: string
   vmTemplate: string
-  eqpTypeList: string[],
-  areaOptions: string[]
-  config: any
+  eqpTypeList: string[]
+  areas: string[]
+  suppliers: string[]
+  eqpTypeConfig: MachineTypeConfig|Record<string, never>
+  eqpTypeConfigBackup: MachineTypeConfig|Record<string, never>
 }
 
 export const useAppStore = defineStore('appStore', {
-  state: ():State => {
-    return { 
-      eqpType: '', 
-      secsMsg:'',
+  state: (): State => {
+    return {
+      eqpType: '',
+      secsMsg: '',
       vmTemplate: '',
       eqpTypeList: [],
-      areaOptions: [],
-      config: null
+      areas: [],
+      suppliers: [],
+      eqpTypeConfig: {},
+      eqpTypeConfigBackup: {}
     }
   },
   // 也可以这样定义
@@ -25,27 +32,22 @@ export const useAppStore = defineStore('appStore', {
   actions: {
     refreshEqpType(type: string) {
       this.eqpType = type
-      this.readConfig(type)
+      this.readEqpTypeConfig(type)
     },
 
     async refreshEqpTypeList() {
-      const list =  await window.extApi.getEqpTypeList()
-     
-      const fileList = list.filter(item=>{
-        return item.endsWith('.json')
-      }).map(item=>{
-         // 去掉json后缀
-        return item.slice(0, -5)
-      })
-      this.eqpTypeList = fileList
+      this.eqpTypeList = await getEqpTypeList()
     },
 
-    async readConfig(eqpType:string) {
-      const fileName = eqpType + '.json'
-      const source = await window.extApi.readEqpConfigFile(fileName)
-      this.config = source
-    }
+    async readEqpTypeConfig(eqpType: string) {
+      const config = await getEqpTypeConfig(eqpType)
+      this.eqpTypeConfig = config
+    },
 
-    
-  },
+    async init() {
+      this.refreshEqpTypeList()
+      this.areas = await getAreaDict()
+      this.suppliers = await getSupplierDict()
+    }
+  }
 })

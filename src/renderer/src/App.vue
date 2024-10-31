@@ -36,18 +36,11 @@ const appStore = useAppStore()
 
 //开始转义
 function transform() {
-  try {
-    const options: MachineTypeConfig = JSON.parse(appStore.config)
-    if(!options){
-      throw new Error('请先配置机器类型')
-    }
+  execFunHasHandleError((options: MachineTypeConfig)=>{
     const secsMsg = secsEditorRef.value?.getSecsMsg()
     code.value = compile(secsMsg,options.CCODE) as string
-  } catch (error: any) {
-    Message.error({
-      content: error.message,
-    })
-  }
+  })
+    
 }
 
 function exportExcel() {
@@ -59,11 +52,10 @@ function exportExcel() {
 
 function execFunHasHandleError(fun: Function) {
   try {
-    const options: MachineTypeConfig = JSON.parse(appStore.config)
-    if(!options){
+    if(!appStore.eqpTypeConfig){
       throw new Error('请先配置机器类型')
     }
-    fun(options)
+    fun(appStore.eqpTypeConfig)
   } catch (error: any) {
     Message.error({
       content: error.message,
@@ -77,6 +69,7 @@ const openConfigDialog = () => {
 
 onMounted(() => {
   appStore.refreshEqpTypeList()
+  appStore.init()
 })
 
 </script>
