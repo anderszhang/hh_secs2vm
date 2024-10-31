@@ -1,7 +1,7 @@
 <template>
     <HotTable ref="tableRef"  :settings="hotSettings" :data="props.data">
         <!-- 从外部传入的props.data 对象数组中，解析出字段名，循环生成column -->
-        <HotColumn v-for="colName in props.colNames" :title="colName" :data="colName" :key="colName"></HotColumn>
+        <HotColumn v-for="colName in props.colNames" :title="colName" :data="colName" :key="colName" ></HotColumn>
     </HotTable>
 </template>
 <script lang="ts" setup>

@@ -8,7 +8,7 @@
     </template>
     <a-tabs default-active-key="table"  @change="handleTabChange">
       <a-tab-pane key="table" title="Table" :no-footer="true">
-        <TableView v-if="props.visible"/>
+        <TableView ref="tableRef" v-if="props.visible"/>
       </a-tab-pane>
       <a-tab-pane key="json" title="JSON">
         <Editor class="mt-[10px] !h-[600px]" v-model:model-value="eqpTypeConfigStr" language="json"></Editor>
@@ -29,6 +29,8 @@ import { Message } from '@arco-design/web-vue';
 const eqpTypeConfigStr:Ref<string> = ref('')
 
 const appStore = useAppStore()
+
+const tableRef = ref()
 
 const props = defineProps<{
   visible: boolean
@@ -75,6 +77,7 @@ const handleBeforeOpen = () => {
 const handleTabChange = (key: string|number) => {
   if (key === 'json') {
     // paraset
+    tableRef.value?.updateStore()
     eqpTypeConfigStr.value = JSON.stringify(appStore.eqpTypeConfig, null, 2)
   }
 }

@@ -79,19 +79,19 @@ const CCODEList = ref<{ CCODE: string, comment: string }[]>([])
 
 const afterOnCellMouseDown = (row: number, col: number) => {
   if (lastRowId == row) return
-  // const ccodeRow = CCODEList.value[row]
+  if(lastRowId > -1){
+    updateEqpTypeConfig(lastRowId)
+  }
+
   const CCODEMap = appStore.eqpTypeConfig!.CCODE
   const keys = Object.keys(CCODEMap)
   if (keys.length > 0 && keys.length > row) {
-    if(lastRowId != -1){
-       updateEqpTypeConfig()
-    }
-
+    
     const newCCODE = keys[row]
     currentCCODEData.value = {
       CCODE: newCCODE,
       comment: CCODEMap[newCCODE].name,
-      paramSet: CCODEMap[newCCODE].paramSet
+      paramSet: [...CCODEMap[newCCODE].paramSet]
     }
   } else {
     currentCCODEData.value = {
@@ -104,9 +104,10 @@ const afterOnCellMouseDown = (row: number, col: number) => {
   lastRowId = row
 }
 
-function updateEqpTypeConfig() {
+function updateEqpTypeConfig(rowId) {
   // 收集数据，更新至 eqpTypeConfig
   const data = paramsExcelRef.value?.getData()
+  
   // 过滤掉数组没个元素都null的空行
   const newData = data.filter((row) => {
     return row.some((cell) => cell !== null)
@@ -117,18 +118,28 @@ function updateEqpTypeConfig() {
       comment: row[1]
     }
   })
-  const rowData = ccodeExcelRef.value?.getData()[lastRowId]
-  const code = rowData[0]
-  if(!code){
+  const ccodeRow = CCODEList.value[rowId]
+  if(!ccodeRow.CCODE){
     return
   }
-  const comment = rowData[1]
-
-  appStore.eqpTypeConfig.CCODE[code] = {
-    name: comment,
+  appStore.eqpTypeConfig.CCODE[ccodeRow.CCODE] = {
+    name: ccodeRow.comment || '',
     paramSet
   }
 }
+
+const updateStore =()=>{
+  if(lastRowId > -1){
+    updateEqpTypeConfig(lastRowId)
+  }else{
+    updateEqpTypeConfig(0)
+  }
+}
+
+defineExpose({
+  updateStore
+})
+
 
 onMounted(() => {
   const { eqpType, area, supplier } = appStore.eqpTypeConfig
