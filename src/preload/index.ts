@@ -1,6 +1,6 @@
 import { contextBridge,ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-
+import {FILE_PATH} from '../share/constant'
 // Custom APIs for renderer
 const extApi = {
 
@@ -12,22 +12,22 @@ const extApi = {
     return ipcRenderer.invoke('file:read', filepath)
   },
 
-  writeConfigFile:(fileName:string, data: string) => {
-    const fName = 'config/'+fileName
+  writeEqpConfigFile:(fileName:string, data: string) => {
+    const fName = FILE_PATH.EQP_TYPE_DIR +fileName
     return ipcRenderer.invoke('file:write', fName, data)
   },
-  readConfigFile: (filepath: string) => {
-    const fName = 'config/'+filepath
+  readEqpConfigFile: (filepath: string) => {
+    const fName = FILE_PATH.EQP_TYPE_DIR +filepath
     return ipcRenderer.invoke('file:read', fName)
   },
 
   exportExcel: (fileName:string, data:any)=>{
-    const fName = 'out/'+fileName
+    const fName = FILE_PATH.EXPORT_DIR+fileName
     return ipcRenderer.invoke('excel:write', fName, data)
   },
 
-  getConfigList: () => {
-    return ipcRenderer.invoke('file:list', 'config')
+  getEqpTypeList: () => {
+    return ipcRenderer.invoke('file:list', FILE_PATH.EQP_TYPE_DIR)
   }
 }
 

@@ -1,34 +1,35 @@
 // stores/counter.js
 import { defineStore } from 'pinia'
 interface State {
-  machineType: string,
+  eqpType: string,
   secsMsg: string,
   vmTemplate: string
-  machineTypeList: string[],
-  
+  eqpTypeList: string[],
+  areaOptions: string[]
   config: any
 }
 
-export const useAppStore = defineStore('counter', {
+export const useAppStore = defineStore('appStore', {
   state: ():State => {
     return { 
-      machineType: '', 
+      eqpType: '', 
       secsMsg:'',
       vmTemplate: '',
-      machineTypeList: [],
+      eqpTypeList: [],
+      areaOptions: [],
       config: null
     }
   },
   // 也可以这样定义
   // state: () => ({ count: 0 })
   actions: {
-    refreshMachineType(type: string) {
-      this.machineType = type
+    refreshEqpType(type: string) {
+      this.eqpType = type
       this.readConfig(type)
     },
 
-    async refreshMachineTypeList() {
-      const list =  await window.extApi.getConfigList()
+    async refreshEqpTypeList() {
+      const list =  await window.extApi.getEqpTypeList()
      
       const fileList = list.filter(item=>{
         return item.endsWith('.json')
@@ -36,13 +37,15 @@ export const useAppStore = defineStore('counter', {
          // 去掉json后缀
         return item.slice(0, -5)
       })
-      this.machineTypeList = fileList
+      this.eqpTypeList = fileList
     },
 
-    async readConfig(machineType:string) {
-      const fileName = machineType + '.json'
-      const source = await window.extApi.readConfigFile(fileName)
+    async readConfig(eqpType:string) {
+      const fileName = eqpType + '.json'
+      const source = await window.extApi.readEqpConfigFile(fileName)
       this.config = source
     }
+
+    
   },
 })

@@ -1,23 +1,23 @@
 <template>
   <div class="w-[100%] flex justify-between ">
     <a-space size="large">
-      <a-select :options="appStore.machineTypeList" v-model="appStore.machineType" :style="{ width: '200px' }"
-        placeholder="Machine Type" allow-search allow-clear @change="(machineType)=>appStore.readConfig(machineType as string)"/>
+      <a-select :options="appStore.eqpTypeList" v-model="appStore.eqpType" :style="{ width: '200px' }"
+        placeholder="Equipment Type" allow-search allow-clear @change="(eqpType)=>appStore.readConfig(eqpType as string)"/>
 
       <!-- 编辑配置 -->
-      <a-button :disabled="!appStore.machineType" @click="openConfigDialog">
+      <a-button :disabled="!appStore.eqpType" @click="openConfigDialog">
         <template #icon>
           <icon-edit />
         </template>
       </a-button>
       <!-- 新增配置 -->
-      <a-button :disabled="!!appStore.machineType" @click="openConfigDialog">
+      <a-button :disabled="!!appStore.eqpType" @click="openConfigDialog">
         <template #icon>
           <icon-plus />
         </template>
       </a-button>
 
-      <a-button type="primary" :disabled="!appStore.machineType" @click="transform">Transform</a-button>
+      <a-button type="primary" :disabled="!appStore.eqpType" @click="transform">Transform</a-button>
     </a-space>
     <a-space size="large" class="justify-end">
       <a-button>Copy</a-button>

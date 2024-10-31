@@ -9,6 +9,7 @@ let currentCCodeConfig: CCODEConfig
 
 interface TransformExcelContext  {
   ast: ExcelNode
+  PPID: string
   indentLevel: number
   addRow: (cells: CellValue[]) => void
   addEndRow: () => void
@@ -31,7 +32,10 @@ export function transformExcel(ast: ASTNode, options: CCODEMap) {
   transformRecipeHead(root.children!, context)
   transformRecipeBody(root.children![3] as SecsList,  context, options)
   context.addEndRow()
-  return  context.ast
+  return  {
+    ast: context.ast,
+    PPID: context.PPID
+  }
 }
 
 
@@ -39,8 +43,10 @@ export function transformExcel(ast: ASTNode, options: CCODEMap) {
 
 function transformRecipeHead(children: ASTNode[], context: TransformExcelContext) {
   // 前三个子节点
-  const ppIdCellValue = getSecsCellValue(children![0],context)
+  const PPIDNode = children![0] as SecsNode
+  const ppIdCellValue = getSecsCellValue(PPIDNode,context)
   context.addRow([ppIdCellValue, 'head', 'PPID', '','Process Program ID'])
+  context.PPID = PPIDNode.value as string
 
   const mdlnCell = getSecsCellValue(children![1],context)
   context.addRow([mdlnCell, 'head', 'MDLN', '','Model Name'])
@@ -102,6 +108,7 @@ function createTransformContext() {
       type: ExcelNodeType.Root,
       children: []
     },
+    PPID:'',
     indentLevel: 0,
 
     addRow(cells) {

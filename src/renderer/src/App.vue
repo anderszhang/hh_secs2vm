@@ -53,7 +53,7 @@ function transform() {
 function exportExcel() {
   execFunHasHandleError((options: MachineTypeConfig)=>{
     const secsMsg = secsEditorRef.value?.getSecsMsg()
-    createExcelFile(appStore.machineType,secsMsg,options.CCODE)
+    createExcelFile(appStore.eqpType,secsMsg,options.CCODE)
   })
 }
 
@@ -76,7 +76,7 @@ const openConfigDialog = () => {
 }
 
 onMounted(() => {
-  appStore.refreshMachineTypeList()
+  appStore.refreshEqpTypeList()
 })
 
 </script>

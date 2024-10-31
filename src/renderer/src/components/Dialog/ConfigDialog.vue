@@ -2,13 +2,13 @@
   <a-modal width="70%" v-model:visible="props.visible" @before-open="handleBeforeOpen" @ok="handleOk"
     @cancel="handleCancel" okText="Confirm" cancelText="Exit" :mask-closable="false" body-class="pt-[0px]">
     <template #title>
-      <span v-if="!appStore.machineType">
+      <span v-if="!appStore.eqpType">
         <span class="warning mr-[5px]">*</span>
-        <a-input v-model="machineTypeInput"
-          :class="{ 'w-[250px] mr-[5px]': true, 'border-warning': !machineTypeInput.length }"
+        <a-input v-model="eqpTypeInput"
+          :class="{ 'w-[250px] mr-[5px]': true, 'border-warning': !eqpTypeInput.length }"
           placeholder="Please enter machine type" allow-clear />
       </span>
-      <span class="mr-[5px]" v-else>{{ appStore.machineType }}</span>
+      <span class="mr-[5px]" v-else>{{ appStore.eqpType }}</span>
       Config
     </template>
     <a-tabs default-active-key="json" lazy-load>
@@ -31,7 +31,7 @@ import { template } from './DefaultTemplate'
 import { useAppStore } from '@renderer/store';
 
 const config = ref('')
-const machineTypeInput = ref('')
+const eqpTypeInput = ref('')
 
 const appStore = useAppStore()
 // const jsondata = ref(template.CCODE[1001].paramSet)
@@ -47,21 +47,21 @@ const emit = defineEmits<{
 
 const handleOk = () => {
 
-  if (appStore.machineType) {
+  if (appStore.eqpType) {
     //修改的情况
   } else {
     // 新增时，如果没有输入机型
-    if (machineTypeInput.value.length == 0) {
+    if (eqpTypeInput.value.length == 0) {
       return
     }
   }
-  const machineType = appStore.machineType || machineTypeInput.value
-  const fileName = `${machineType}.json`
+  const eqpType = appStore.eqpType || eqpTypeInput.value
+  const fileName = `${eqpType}.json`
   // 保存配置文件
-  window.extApi.writeConfigFile(fileName, config.value).then(()=>{
+  window.extApi.writeEqpConfigFile(fileName, config.value).then(()=>{
     // 保存成功后，更新配置
-    appStore.refreshMachineType(machineType)
-    appStore.refreshMachineTypeList()
+    appStore.refreshEqpType(eqpType)
+    appStore.refreshEqpTypeList()
     emit('close')
   })
 
@@ -73,7 +73,7 @@ const handleCancel = () => {
 
 const handleBeforeOpen = () => {
   // 如果有值，为编辑状态
-  if (appStore.machineType) {
+  if (appStore.eqpType) {
     config.value = appStore.config
   } else {
     config.value = JSON.stringify(template, null, 2)

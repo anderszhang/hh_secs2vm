@@ -1,11 +1,11 @@
 import { compileToExcel } from '@renderer/compiler/compile'
 import { CCODEMap } from '@renderer/compiler/options'
 
-export function createExcelFile(machineType: string, secsMsg: string, ccodeMap: CCODEMap) {
-  const data = compileToExcel(secsMsg, ccodeMap)
+export function createExcelFile(eqpType: string, secsMsg: string, ccodeMap: CCODEMap) {
+  const {PPID, data} = compileToExcel(secsMsg, ccodeMap)
   const excelData = [
     {
-      name: 'sheet1',
+      name: PPID,
       data: data,
       hasHeader: true,
       hasBorder: true,
@@ -33,5 +33,5 @@ export function createExcelFile(machineType: string, secsMsg: string, ccodeMap: 
       ]
     }
   ]
-  window.extApi.exportExcel(`${machineType}.xlsx`, excelData)
+  window.extApi.exportExcel(`${eqpType}.xlsx`, excelData)
 }

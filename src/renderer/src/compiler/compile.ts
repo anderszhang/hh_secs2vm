@@ -13,16 +13,22 @@ export function compile(source: string, options: CCODEMap) {
 }
 
 
-export function compileToExcel(source: string, options: CCODEMap):any[][] {
-  const ast = secsParse(source);
-  const excelAst:ExcelNode = transformExcel(ast, options);
+export function compileToExcel(source: string, options: CCODEMap): {
+  PPID: string,
+  data: any[][]
+} {
+  const pAst = secsParse(source);
+  const {ast,PPID}= transformExcel(pAst, options);
   const data: any[][] = []
-  excelAst.children!.forEach((row) => {
+  ast.children!.forEach((row) => {
     const rowData: any[] = []
     row.children!.forEach((cell) => {
       rowData.push(cell.value)
     })
     data.push(rowData)
   })
-  return data;
+  return {
+    PPID,
+    data
+  }
 }
