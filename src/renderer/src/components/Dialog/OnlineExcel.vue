@@ -65,6 +65,7 @@ defineExpose({
 
 watch(() => props.data, (newVal) => {
     tableRef.value.hotInstance.loadData(newVal)
+    tableRef.value.hotInstance.scrollViewportTo({ row: 0 });
 })
 
 </script>
